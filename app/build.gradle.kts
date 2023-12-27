@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -66,4 +68,34 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Compose dependencies
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("androidx.navigation:navigation-compose:2.7.6")
+
+    // for kapt
+    kapt("groupdId:artifactId:version")
+
+    // Dagger - Hilt
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-compiler:2.50")
+
+    // For instrumentation tests
+    androidTestImplementation  ("com.google.dagger:hilt-android-testing:2.50")
+    kaptAndroidTest ("com.google.dagger:hilt-compiler:2.50")
+
+    // For local unit tests
+    testImplementation ("com.google.dagger:hilt-android-testing:2.50")
+    kaptTest ("com.google.dagger:hilt-compiler:2.50")
+
+    // Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+
+    // Kotlin Extensions and Corouine support for Room
+    implementation("androidx.room:room-ktx:2.6.1")
+}
+
+kapt {
+    correctErrorTypes
 }
