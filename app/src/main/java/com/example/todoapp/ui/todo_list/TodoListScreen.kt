@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.todoapp.util.UiEvent
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -36,15 +38,22 @@ fun TodoListScreen(
        viewModel.uiEvent.collect { event ->
            when(event) {
                is UiEvent.ShowSnackBar -> {
-                   val result = snackbarHostState.showSnackbar(
-                       message = event.message,
-                       actionLabel = event.action
-                   )
-                   if(result == SnackbarResult.ActionPerformed) {
-                        viewModel.onEvent(TodoListEvent.OnUndoDeleteClick)
+                   launch {
+                       val result = snackbarHostState.showSnackbar(
+                           message = event.message,
+                           actionLabel = event.action,
+                           duration = SnackbarDuration.Long
+                       )
+                       if (result == SnackbarResult.ActionPerformed) {
+                           viewModel.onEvent(TodoListEvent.OnUndoDeleteClick)
+                       }
                    }
                }
-               is UiEvent.Navigate -> onNavigate(event)
+               is UiEvent.Navigate -> {
+                   launch {
+                       onNavigate(event)
+                   }
+               }
                else -> Unit
            }
        }
