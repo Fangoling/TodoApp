@@ -44,7 +44,7 @@ fun TodoItem(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 IconButton(onClick = {
-                    onEvent(TodoListEvent.OnUndoDeleteClick)
+                    onEvent(TodoListEvent.OnDeleteTodoClick(todo))
                 }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
